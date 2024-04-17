@@ -2,7 +2,7 @@ section .data
     ; Define strings to be displayed as prompts and messages
     prompt1 db "Enter the first number: ", 0
     prompt2 db "Enter the second number: ", 0
-    result_msg db "The sum is: %d", 10, 0
+    result_msg db "The difference is: %d", 10, 0
 
 section .bss
     ; Define uninitialized memory space to store the input numbers
@@ -39,9 +39,9 @@ _start:
     call    scanf    ; Call scanf to read the second number
     add     esp, 8   ; Adjust the stack pointer after the call
 
-    ; Add the numbers
+    ; Subtract the second number from the first number
     mov     eax, [num1]  ; Move the first number into the eax register
-    add     eax, [num2]  ; Add the second number to eax
+    sub     eax, [num2]  ; Subtract the second number from eax
 
     ; Print the result
     push    eax          ; Push the result onto the stack
@@ -54,4 +54,5 @@ _start:
     ret                  ; Return from the program
 
 section .data
-    fmt_input db "%d", 0  ; Define format string for scanf
+    ; Define format string for scanf
+    fmt_input db "%d", 0
