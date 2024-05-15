@@ -1,4 +1,3 @@
-	.file	"lab_5.c"
 	.section .rdata,"dr"
 	.align 4
 LC0:
@@ -245,9 +244,10 @@ LC24:
 	.globl	_decimal_to_binary
 	.def	_decimal_to_binary;	.scl	2;	.type	32;	.endef
 _decimal_to_binary:
+	pushl	%edi
 	pushl	%esi
 	pushl	%ebx
-	subl	$164, %esp
+	subl	$160, %esp
 	leal	28(%esp), %esi
 	movl	$LC22, (%esp)
 	call	_printf
@@ -258,47 +258,51 @@ _decimal_to_binary:
 	cmpl	$0, %eax
 	je	L24
 	movl	$0, %edx
-	jle	L37
+	jle	L36
 	.p2align 4,,10
 L31:
-	movl	%eax, %ecx
-	movl	%edx, %ebx
-	andl	$1, %ecx
-	movl	%ecx, 32(%esp,%edx,4)
+	movl	%eax, %ebx
+	movl	%edx, %edi
+	andl	$1, %ebx
+	movl	%ebx, 32(%esp,%edx,4)
 	addl	$1, %edx
 	sarl	%eax
 	jne	L31
-	leal	32(%esp,%ebx,4), %ebx
 	movl	$LC24, (%esp)
 	movl	$0, 28(%esp)
+	leal	28(%esp,%edi,4), %edi
 	call	_printf
+	jmp	L30
 	.p2align 4,,10
-L29:
-	movl	(%ebx), %eax
-	movl	$LC13, (%esp)
-	subl	$4, %ebx
-	movl	%eax, 4(%esp)
-	call	_printf
-	cmpl	%ebx, %esi
-	jne	L29
+L37:
+	movl	(%edi), %ebx
+	subl	$4, %edi
 L30:
+	movl	%ebx, 4(%esp)
+	movl	$LC13, (%esp)
+	call	_printf
+	cmpl	%edi, %esi
+	jne	L37
+L29:
 	movl	$10, (%esp)
 	call	_putchar
-	addl	$164, %esp
+	addl	$160, %esp
 	popl	%ebx
 	popl	%esi
+	popl	%edi
 	ret
 L24:
 	movl	$LC23, (%esp)
 	call	_puts
-	addl	$164, %esp
+	addl	$160, %esp
 	popl	%ebx
 	popl	%esi
+	popl	%edi
 	ret
-L37:
+L36:
 	movl	$LC24, (%esp)
 	call	_printf
-	jmp	L30
+	jmp	L29
 	.section .rdata,"dr"
 LC25:
 	.ascii "Hexadecimal: 0\0"
@@ -309,9 +313,10 @@ LC26:
 	.globl	_decimal_to_hexadecimal
 	.def	_decimal_to_hexadecimal;	.scl	2;	.type	32;	.endef
 _decimal_to_hexadecimal:
+	pushl	%edi
 	pushl	%esi
 	pushl	%ebx
-	subl	$84, %esp
+	subl	$80, %esp
 	movl	$LC22, (%esp)
 	call	_printf
 	leal	28(%esp), %eax
@@ -320,7 +325,7 @@ _decimal_to_hexadecimal:
 	call	_scanf
 	movl	28(%esp), %eax
 	cmpl	$0, %eax
-	je	L48
+	je	L47
 	movl	$858927408, 32(%esp)
 	movl	$926299444, 36(%esp)
 	movl	$1111570744, 40(%esp)
@@ -331,45 +336,48 @@ _decimal_to_hexadecimal:
 L42:
 	movl	%eax, %ecx
 	sarl	$4, %eax
-	movl	%edx, %ebx
+	movl	%edx, %esi
 	andl	$15, %ecx
-	movzbl	32(%esp,%ecx), %ecx
-	movb	%cl, 48(%esp,%edx)
+	movsbl	32(%esp,%ecx), %ebx
+	movb	%bl, 48(%esp,%edx)
 	addl	$1, %edx
 	testl	%eax, %eax
 	jne	L42
 	movl	$LC26, (%esp)
 	movl	$0, 28(%esp)
-	leal	47(%esp), %esi
+	leal	47(%esp,%esi), %esi
 	call	_printf
-	leal	48(%esp), %eax
-	addl	%eax, %ebx
+	leal	47(%esp), %edi
+	jmp	L44
 	.p2align 4,,10
-L43:
-	movsbl	(%ebx), %eax
-	subl	$1, %ebx
-	movl	%eax, (%esp)
-	call	_putchar
-	cmpl	%ebx, %esi
-	jne	L43
+L48:
+	movsbl	(%esi), %ebx
+	subl	$1, %esi
 L44:
+	movl	%ebx, (%esp)
+	call	_putchar
+	cmpl	%edi, %esi
+	jne	L48
+L43:
 	movl	$10, (%esp)
 	call	_putchar
-	addl	$84, %esp
+	addl	$80, %esp
 	popl	%ebx
 	popl	%esi
+	popl	%edi
 	ret
-L48:
+L47:
 	movl	$LC25, (%esp)
 	call	_puts
-	addl	$84, %esp
+	addl	$80, %esp
 	popl	%ebx
 	popl	%esi
+	popl	%edi
 	ret
 L41:
 	movl	$LC26, (%esp)
 	call	_printf
-	jmp	L44
+	jmp	L43
 	.section .rdata,"dr"
 LC27:
 	.ascii "Enter the first string: \0"
