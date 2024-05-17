@@ -77,7 +77,6 @@ void help(){
     printf("8. Concatenate two strings\n");
     printf("9. Compare two strings\n");
     printf("q. Exit the program\n");
-
 }
 
 void generate_rand(int count){
